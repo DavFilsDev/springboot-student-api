@@ -50,17 +50,11 @@ public class StudentController {
                         .body("Accept header is required");
             }
 
-            if ("text/plain".equals(acceptHeader)) {
+            if ("text/plain".equals(acceptHeader) || "application/json".equals(acceptHeader)) {
                 String studentNames = studentService.getStudentsNames();
                 return ResponseEntity
                         .status(HttpStatus.OK)
-                        .header("Content-Type", "text/plain")
-                        .body(studentNames);
-            } else if ("application/json".equals(acceptHeader)) {
-                String studentNames = studentService.getStudentsNames();
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .header("Content-Type", "application/json")
+                        .header("Content-Type", acceptHeader)
                         .body(studentNames);
             } else {
                 return ResponseEntity
