@@ -1,5 +1,7 @@
 package org.zenith.springbootstudentapi.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.zenith.springbootstudentapi.model.Student;
 import org.zenith.springbootstudentapi.service.StudentService;
@@ -14,8 +16,15 @@ public class StudentController {
     }
 
     @GetMapping("/welcome")
-    public String welcome(@RequestParam String name) {
-        return studentService.welcomeMessage(name);
+    public ResponseEntity<String> welcome(@RequestParam(required = false) String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Name parameter is required");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(studentService.welcomeMessage(name));
     }
 
     @PostMapping("/students")
