@@ -72,20 +72,21 @@ Retrieves all stored student names.
 ## Project Structure
 ```
 src/main/java/com/example/demo/
-├── DemoApplication.java
 ├── controller/
 │   └── StudentController.java
+├── service/
+│   └── StudentService.java
 ├── model/
 │   └── Student.java
-└── service/
-    └── StudentService.java
+└── repository/
+    └── StudentRepository.java
 ```
 
 ## Setup Instructions
 
 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/DavFilsDev/springboot-student-api
 ```
 
 2. Navigate to the project directory
