@@ -22,4 +22,13 @@ public class StudentController {
     public String createStudents(@RequestBody List<Student> newStudents) {
         return studentService.addStudents(newStudents);
     }
+
+    @GetMapping("/students")
+    public String getStudents(@RequestHeader("Accept") String acceptHeader) {
+        if ("text/plain".equals(acceptHeader)) {
+            return studentService.getStudentsNames();
+        } else {
+            return "Format non supporté.";
+        }
+    }
 }
