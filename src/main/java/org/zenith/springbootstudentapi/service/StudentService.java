@@ -14,11 +14,9 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public String addStudents(List<Student> newStudents) {
+    public List<Student> addStudents(List<Student> newStudents) {
         studentRepository.saveAll(newStudents);
-        return studentRepository.findAll().stream()
-                .map(Student::getFirstName)
-                .collect(Collectors.joining(", "));
+        return studentRepository.findAll();
     }
 
     public String welcomeMessage(String name) {
@@ -30,5 +28,9 @@ public class StudentService {
         return students.stream()
                 .map(Student::getFirstName)
                 .collect(Collectors.joining(", "));
+    }
+
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 }
