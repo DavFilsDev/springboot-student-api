@@ -28,8 +28,17 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-    public String createStudents(@RequestBody List<Student> newStudents) {
-        return studentService.addStudents(newStudents);
+    public ResponseEntity<List<Student>> createStudents(@RequestBody List<Student> newStudents) {
+        try {
+            List<Student> allStudents = studentService.addStudents(newStudents);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(allStudents);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build();
+        }
     }
 
     @GetMapping("/students")
