@@ -42,11 +42,35 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public String getStudents(@RequestHeader("Accept") String acceptHeader) {
-        if ("text/plain".equals(acceptHeader)) {
-            return studentService.getStudentsNames();
-        } else {
-            return "Format non supporté.";
+    public ResponseEntity<?> getStudents(@RequestHeader(value = "Accept", required = false) String acceptHeader) {
+        try {
+            if (acceptHeader == null) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body("Accept header is required");
+            }
+
+            if ("text/plain".equals(acceptHeader)) {
+                String studentNames = studentService.getStudentsNames();
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type", "text/plain")
+                        .body(studentNames);
+            } else if ("application/json".equals(acceptHeader)) {
+                String studentNames = studentService.getStudentsNames();
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type", "application/json")
+                        .body(studentNames);
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_IMPLEMENTED)
+                        .body("Format non supporté.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while processing your request");
         }
     }
 }
