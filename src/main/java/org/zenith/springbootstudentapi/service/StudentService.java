@@ -24,4 +24,11 @@ public class StudentService {
     public String welcomeMessage(String name) {
         return "Welcome " + name;
     }
+
+    public String getStudentsNames() {
+        List<Student> students = studentRepository.findAll();
+        return students.stream()
+                .map(Student::getFirstName)
+                .collect(Collectors.joining(", "));
+    }
 }
