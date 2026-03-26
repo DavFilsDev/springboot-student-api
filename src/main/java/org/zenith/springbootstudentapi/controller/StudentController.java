@@ -3,6 +3,7 @@ package org.zenith.springbootstudentapi.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.zenith.springbootstudentapi.exception.BadRequestException;
 import org.zenith.springbootstudentapi.model.Student;
 import org.zenith.springbootstudentapi.service.StudentService;
 import java.util.List;
@@ -28,20 +29,23 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-    public ResponseEntity<List<Student>> createStudents(@RequestBody List<Student> newStudents) {
+    public ResponseEntity<?> createStudents(@RequestBody List<Student> newStudents) {
         try {
             List<Student> allStudents = studentService.addStudents(newStudents);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(allStudents);
+        } catch (BadRequestException e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .build();
+                    .body("An error occurred while processing your request");
         }
     }
 
-    @GetMapping("/students")
     public ResponseEntity<?> getStudents(@RequestHeader(value = "Accept", required = false) String acceptHeader) {
         try {
             if (acceptHeader == null) {
